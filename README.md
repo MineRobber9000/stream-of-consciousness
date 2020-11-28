@@ -5,7 +5,7 @@ Fancy twtxt feed display on Gemini, with an added post-by-Gemini feature.
 ## How to set up
 
 1. Clone this repository to somewhere your gemini server can access it.
-2. Run `setup.sh`.
+2. Run `setup.sh`. Also, edit `DISPLAY_NAME` in `index.gmi` to be your handle instead of mine.
 3. Set up your client to use a client certificate, and access `certinfo.gmi`. Copy the given hash into `.accepted_hashes` and refresh the page. The last line should now say `Certificate is in list`.
 4. Go to `index.gmi`. There should be a link at the top saying `You can post to this stream of consciousness here.` (Don't worry; this only appears as a convenience feature, since you're using a client certificate that the Stream of Consciousness knows it can take a post from.)
 5. Follow the link, input your text, and it should spit you back out to `index.gmi` with your new post included.
