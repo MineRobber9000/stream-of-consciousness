@@ -1,6 +1,6 @@
 # Stream of Consciousness
 
-Fancy twtxt feed display on Gemini, with an added post-by-Gemini feature. Designed for gemserv, although at a glance it should also work in GLV-1.12556, but not on molly-brown ([at least, not until my PR gets merged](https://tildegit.org/solderpunk/molly-brown/pulls/14)). If you use a different server,
+Fancy twtxt feed display on Gemini, with an added post-by-Gemini feature.
 
 ## How to set up
 
