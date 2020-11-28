@@ -1,0 +1,50 @@
+#!/usr/bin/python3
+import gemini as gem
+
+DISPLAY_NAME = "khuxkm"
+
+ALLOWED_HASHES = set()
+try:
+	with open(".accepted_hashes") as f:
+		for l in f:
+			l = l.strip()
+			if l.startswith("#"):
+				continue
+			ALLOWED_HASHES.add(l)
+except: # default to no hashes in list
+	pass
+
+show_post_link = False
+if gem.has_client_cert() and gem.get_client_cert() in ALLOWED_HASHES:
+	show_post_link = True
+
+gem.start_response("text/gemini")
+gem.h1(f"{DISPLAY_NAME}'s Stream of Consciousness")
+gem.text(f"This is a stream-of-consciousness thing that {DISPLAY_NAME} can post to at any time. Times are in UTC.")
+if show_post_link:
+	gem.text()
+	gem.link("You can post to this stream of consciousness here.","post.gmi")
+gem.text()
+
+lines = []
+try:
+	with open("plaintext.txt") as f:
+		for l in f:
+			l = l.rstrip()
+			lines.append(l.split("\t",1))
+	lines.sort(key=lambda x: x[0],reverse=True)
+except:
+	pass
+
+day = "9999-12-31"
+for line in lines:
+	lday, ltime = line[0].split("T")
+	if lday!=day:
+		gem.h2(lday)
+		day=lday
+	ltime = ltime.rstrip("Z") # strip Zulu time
+	ltime = ":".join(ltime.split(":")[:2]) # they don't need to know to the second when I said something
+	gem.text(f"{ltime} - {line[1]}")
+	gem.text()
+
+gem.link("You can {}subscribe to this stream of consciousness in a twtxt-compatible format.".format("also " if show_post_link else ""),"plaintext.txt")

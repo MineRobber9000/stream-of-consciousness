@@ -1,0 +1,12 @@
+### Python ###
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# I deleted the rest of the basic Python gitignore because I don't need it.
+
+# Just don't include accepted_hashes or plaintext.txt, since those can be created with setup.sh.
+
+.accepted_hashes
+plaintext.txt

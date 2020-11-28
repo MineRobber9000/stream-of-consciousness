@@ -1,0 +1,21 @@
+#!/usr/bin/python3
+import gemini as gem
+
+ALLOWED_HASHES = set()
+try:
+	with open(".accepted_hashes") as f:
+		for l in f:
+			l = l.strip()
+			if l.startswith("#"):
+				continue
+			ALLOWED_HASHES.add(l)
+except: # default to no hashes in list
+	pass
+
+if gem.has_client_cert():
+	gem.start_response("text/gemini")
+	gem.text("Hash: "+gem.get_client_cert())
+	gem.text("REMOTE_USER (typically the CN): "+gem.get_remote_user())
+	gem.text("Certificate is {}in list".format("not " if gem.get_client_cert() not in ALLOWED_HASHES else ""))
+else:
+	gem.start_response("Supply a client certificate to get the cert info available to a CGI script.","60")

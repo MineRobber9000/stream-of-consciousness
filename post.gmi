@@ -1,0 +1,73 @@
+#!/usr/bin/python3
+import sys, time
+from urllib.parse import unquote
+import gemini as gem
+
+def log(x):
+	return
+#	with open("log.txt","a") as f: f.write(x+"\n")
+
+ALLOWED_HASHES = set()
+try:
+	with open(".accepted_hashes") as f:
+		for l in f:
+			l = l.strip()
+			if l.startswith("#"):
+				continue
+			ALLOWED_HASHES.add(l)
+except: # default to no hashes in list
+	pass
+
+log("loaded (or attempted to load) hash list, verifying hash...")
+
+if gem.has_client_cert():
+	log("...client provided cert...")
+	if gem.get_client_cert() not in ALLOWED_HASHES:
+		log("...not on list.")
+		gem.start_response("This certificate is not allowed to post to this stream of consciousness.","61")
+		sys.exit()
+	log("...on list. Continuing...")
+else:
+	gem.start_response("Please authenticate with a client certificate.","60")
+	sys.exit()
+
+# If we're still here, we're authenticated.
+
+if not gem.has_input():
+	log("No input given!")
+	gem.start_response("Enter a line to add to the log.","10")
+	sys.exit()
+log("Input given!")
+
+# If we're still here *now*, we're authenticated and have something to say.
+
+log("Loading plaintext.txt...")
+lines = []
+try:
+	with open("plaintext.txt") as f:
+		for l in f:
+			l = l.rstrip()
+			lines.append(l.split("\t",1))
+	lines.sort(key=lambda x: x[0],reverse=True)
+	log("Loaded.")
+except:
+	log("Error loading.")
+	pass
+
+log("Getting timestamp...")
+# Now we'll add a new line. First, we need a timestring.
+ts = time.strftime("%Y-%m-%dT%H:%M:%SZ",time.gmtime())
+
+log("Adding to list...")
+# Now let's add it.
+lines.insert(0,[ts,unquote(gem.get_input())])
+
+log("Writing list to file...")
+# Finally, let's spit it back into its text file.
+with open("plaintext.txt","w") as f:
+	f.write("\n".join(["\t".join(line) for line in lines]))
+	f.write("\n")
+
+log("Redirecting back to main.")
+# Serve a temp redirect back to the front page.
+gem.start_response("./index.gmi","31")
