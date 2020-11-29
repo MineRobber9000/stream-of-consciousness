@@ -23,6 +23,6 @@ If all of this worked, congratulations! You've now got a working stream of consc
 |Agate|No|No CGI support in Agate as of yet.|
 |Space-Age|No|Space-Age only supports Clojure CGI, and this is Python.|
 |Denoscuri|No|Denoscuri has no CGI support, and doesn't plan to add arbitrary CGI support.|
-|Flounder|IDK|I don't believe so, but I could be wrong.|
+|Flounder|No|[it uses a library that has no CGI support](https://github.com/MineRobber9000/stream-of-consciousness/issues/1)|
 
 Let me know if you try this with any other servers.
