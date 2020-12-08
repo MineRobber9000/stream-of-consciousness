@@ -57,4 +57,4 @@ def get_client_cert():
 	return os.environ["TLS_CLIENT_HASH"]
 
 def get_remote_user():
-	return os.environ.get("REMOTE_USER",os.environ["TLS_CLIENT_SUBJECT_CN"])
+	return os.environ.get("REMOTE_USER",os.environ.get("TLS_CLIENT_SUBJECT_CN",""))
